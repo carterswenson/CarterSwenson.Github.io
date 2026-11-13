@@ -1,2 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
 
-Test message
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>About | Trevor Erwin</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    background:#050816;
+    color:white;
+    overflow-x:hidden;
+}
+
+/* Star Background */
+
+canvas{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+}
+
+body::before{
+
+    content:"";
+
+    position:fixed;
+    inset:0;
+
+    background:
+        radial-gradient(circle at 20% 20%,
+        rgba(70,120,255,.15),
+        transparent 25%),
+
+        radial-gradient(circle at 80% 40%,
+        rgba(0,200,255,.12),
+        transparent 25%),
+
+        radial-gradient(circle at 50% 80%,
+        rgba(120,0,255,.12),
+        transparent 30%);
+
+    filter:blur(60px);
+
+    z-index:-1;
+}
+
+/* Navbar */
+
+nav{
+
+    position:fixed;
+    top:0;
+    width:100%;
+
+    padding:20px 8%;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    background:rgba(5,8,22,.65);
+    backdrop-filter:blur(15px);
+
+    z-index:999;
+}
+
+nav a{
+
+    color:white;
+    text-decoration:none;
+    margin-left:20px;
+}
+
+nav a:hover{
+    color:#74a8ff;
+}
+
+/* Header */
+
+.header{
+
+    text-align:center;
+    padding-top:150px;
+    padding-bottom:50px;
+}
+
+.header h1{
+
+    font-size:4rem;
+    margin-bottom:10px;
+}
+
+.header p{
+    color:#b7c3dc;
+}
+
+/* Main Content */
+
+.about-container{
+
+    width:min(1400px,95%);
+    margin:auto;
+
+    background:rgba(255,255,255,.04);
+
+    backdrop-filter:blur(14px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:30px;
+
+    padding:50px;
+
+    display:grid;
+    grid-template-columns:250px 1fr 250px;
+
+    gap:40px;
+
+    margin-bottom:100px;
+}
+
+/* Photo Columns */
+
+.photo-column{
+
+    display:flex;
+    flex-direction:column;
+    gap:25px;
+}
+
+.photo-column img{
+
+    width:100%;
+    border-radius:20px;
+
+    object-fit:cover;
+
+    transition:.4s;
+
+    box-shadow:
+    0 0 20px rgba(100,150,255,.2);
+}
+
+.photo-column img:hover{
+
+    transform:scale(1.03);
+}
+
+/* Bio */
+
+.bio h2{
+
+    margin-top:35px;
+    margin-bottom:15px;
+
+    color:#7eafff;
+}
+
+.bio p{
+
+    line-height:1.9;
+    margin-bottom:20px;
+
+    color:#d3dcf1;
+}
+
+.bio{
+
+    font-size:1.05rem;
+}
+
+/* Footer */
+
+footer{
+
+    text-align:center;
+
+    padding:40px;
+
+    color:#9da7be;
+}
+
+/* Mobile Layout */
+
+@media(max-width:1100px){
+
+    .about-container{
+
+        grid-template-columns:1fr;
+    }
+
+    .photo-column{
+
+        flex-direction:row;
+        overflow-x:auto;
+    }
+
+    .photo-column img{
+
+        min-width:250px;
+    }
+
+    .header h1{
+        font-size:2.75rem;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<canvas id="stars"></canvas>
+
+<nav>
+
+<div>
+    <a href="index.html" style="text-decoration:none;color:white;">
+        Trevor Erwin
+    </a>
+</div>
+
+<div>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="research.html">Research</a>
+    <a href="outreach.html">Outreach</a>
+    <a href="contact.html">Contact</a>
+    <a href="CV for Trevor Erwin.pdf">CV</a>
+</div>
+
+</nav>
+
+<section class="header">
+
+<h1>About Me</h1>
+
+<p>
+My background, interests, and journey into astronomy and physics.
+</p>
+
+</section>
+
+<section class="about-container">
+
+<div class="photo-column">
+
+    <img src="images/telescope.jpeg">
+    <img src="images/hollow_spheres.jpeg">
+    <img src="images/mcdonaldobservatory.JPG">
+    <img src="images/Newton.JPG">
+
+
+</div>
+
+<div class="bio">
+
+<h2>Introduction</h2>
+
+<p>
+Hello! I'm Trevor Erwin, a graduate student interested in astronomy,
+physics, and planetary science. Today, much of my work focuses on 
+combining theoretical understanding, scientific computing, 
+and observational data to investigate astrophysical systems.
+</p>
+
+
+
+<h2>Background</h2>
+<p>
+I was born in San Antonio, Texas and was always fascinated by space. 
+I remember sitting in our backyard at night, gazing up at the stars, wondering what we could learn from them.
+After working in the summers in high school, I purchased my first telescope, which changed my life. 
+I spent most of my time from then on sharing the night sky with others, doing community outreach, and 
+learning as much as I could about the stars.
+</p>
+
+<p>
+I studied at the University of Texas at Austin for my undergraduate, working with
+Dr. Caroline Morley. This was when I first started learning about exoplanets and their atmospheres.
+My work with Dr. Morley involved creating a new particle model for studying dense particles in
+exoplanet atmospheres. I fell in love with the field and have been pursuing it ever since.
+</p>
+
+<p>
+Today, I am a graduate student at Purdue University, where I work with Dr. Alexandria Johnson, studying 
+the atmospheres of brown dwarfs, extreme substellar objects with unique atmospheric properties. My work 
+focuses on modeling salts and their interaction with water vapor, applying what we know about Earth's
+microphysics to the stars.
+</p>
+
+<h2>Academic Interests</h2>
+
+<p>
+My primary interests lie within exoplanet astronomy and planetary science.
+In particular, I am interested in exoplanet atmospheres and the origin of life. 
+My work examines how we can apply our knowledge of Earth's atmosphere to better understand
+the atmospheres of exotic exoplanets. See my research page for more information on my work!
+</p>
+
+<h2>Community Involvement</h2>
+
+<p>
+As a scientist, I feel a responsibility to help inspire the next generation
+of young researchers and engineers. As a result, I often work with local schools and educators through demonstrations,
+classroom visits, and astronomy-focused lessons! I love teaching and sharing my passion for science with others!
+Interested in having me visit your school? Please reach out!
+</p>
+
+
+
+<h2>Beyond Research</h2>
+
+<p>
+Outside of academics, I love playing board games and Dungeons and Dragons.
+One of my favorite board games is called Terraforming Mars by Fryx Games. 
+I'm also an ametueur photographer, and love hiking and camping, exploring new places and capturing
+fun moments with my fiancee.
+</p>
+
+<p>
+I have a little cat named Princess Toast, and I enjoy reading new books while she 
+sits on my lap. Some of my favorite books lately have been the Dungeon Crawler Carl 
+series by Matt Dinniman, and Children of Time by Adrian Tchaikovsky. 
+
+</p>
+
+
+</div>
+
+<div class="photo-column">
+
+    <img src="images/UTgrad.jpg">
+    <img src="images/purduebridge.jpg">
+    <img src="images/Yerkes.JPG">
+    <img src="images/GLEAM.JPG">
+
+</div>
+
+</section>
+
+<footer>
+
+© 2026 Trevor Erwin
+
+</footer>
+
+<script>
+
+/* STARFIELD */
+
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+
+function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+resize();
+window.addEventListener("resize", resize);
+
+const stars = [];
+
+for(let i=0;i<250;i++){
+
+    stars.push({
+
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height,
+        r:Math.random()*2,
+        s:Math.random()*0.5
+
+    });
+
+}
+
+function animate(){
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    ctx.fillStyle="white";
+
+    stars.forEach(star=>{
+
+        ctx.beginPath();
+        ctx.arc(star.x,star.y,star.r,0,Math.PI*2);
+        ctx.fill();
+
+        star.y += star.s;
+
+        if(star.y > canvas.height){
+
+            star.y = 0;
+            star.x = Math.random()*canvas.width;
+
+        }
+
+    });
+
+    requestAnimationFrame(animate);
+}
+
+animate();
+
+</script>
+
+</body>
+</html>
