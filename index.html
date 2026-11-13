@@ -499,75 +499,441 @@ Email: erwin19@purdue.edu
 
 </footer>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atmospheric Website</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    color: white;
+    overflow-x: hidden;
+}
+
+#atmosphere {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    pointer-events: none;
+}
+
+#lightning {
+    position: fixed;
+    inset: 0;
+    background: rgba(190, 200, 255, 0.06);
+    opacity: 0;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+}
+
+section {
+    min-height: 100vh;
+    padding: 120px 10%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+section h1 {
+    font-size: clamp(40px, 7vw, 80px);
+    margin-bottom: 20px;
+}
+
+section p {
+    font-size: 20px;
+    max-width: 650px;
+    line-height: 1.7;
+}
+
+.glass {
+    background: rgba(10, 15, 30, 0.15);
+    backdrop-filter: blur(5px);
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 750px;
+}
+
+.fade {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+.fade.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="atmosphere"></canvas>
+<div id="lightning"></div>
+
+<div class="content">
+
+<section>
+    <div class="glass fade">
+        <h1>Welcome</h1>
+        <p>Welcome to my atmospheric science website.</p>
+    </div>
+</section>
+
+<section>
+    <div class="glass fade">
+        <h1>About Me</h1>
+        <p>Learn more about my background and interests.</p>
+    </div>
+</section>
+
+<section>
+    <div class="glass fade">
+        <h1>Research</h1>
+        <p>Exploring atmospheric chemistry and meteorology.</p>
+    </div>
+</section>
+
+<section>
+    <div class="glass fade">
+        <h1>Projects</h1>
+        <p>Research projects and scientific visualizations.</p>
+    </div>
+</section>
+
+<section>
+    <div class="glass fade">
+        <h1>Contact</h1>
+        <p>Get in touch!</p>
+    </div>
+</section>
+
+</div>
 
 <script>
 
-/* STARFIELD */
+/* =====================================================
+   SETTINGS
+===================================================== */
 
-const canvas = document.getElementById("stars");
+const canvas = document.getElementById("atmosphere");
 const ctx = canvas.getContext("2d");
+const lightning = document.getElementById("lightning");
+
+let width, height;
+let scrollProgress = 0;
 
 function resize() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
 }
 
 resize();
 window.addEventListener("resize", resize);
 
-const stars = [];
+/* =====================================================
+   SCROLL POSITION
+===================================================== */
 
-for(let i = 0; i < 250; i++) {
-  stars.push({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    r: Math.random() * 2,
-    s: Math.random() * 0.6
-  });
+window.addEventListener("scroll", () => {
+    const maxScroll =
+        document.documentElement.scrollHeight - window.innerHeight;
+
+    scrollProgress = maxScroll > 0
+        ? window.scrollY / maxScroll
+        : 0;
+}, { passive: true });
+
+/* =====================================================
+   COLOR TRANSITIONS
+===================================================== */
+
+function lerp(a, b, t) {
+    return a + (b - a) * t;
 }
+
+function getColor(p, a, b, c) {
+    let t, first, second;
+
+    if (p < 0.5) {
+        t = p * 2;
+        first = a;
+        second = b;
+    } else {
+        t = (p - 0.5) * 2;
+        first = b;
+        second = c;
+    }
+
+    return first.map((v, i) =>
+        Math.round(lerp(v, second[i], t))
+    );
+}
+
+/* =====================================================
+   SKY
+===================================================== */
+
+function drawSky() {
+
+    const top = getColor(
+        scrollProgress,
+        [35, 135, 220],
+        [180, 75, 40],
+        [20, 15, 65]
+    );
+
+    const bottom = getColor(
+        scrollProgress,
+        [160, 215, 245],
+        [105, 35, 40],
+        [8, 20, 50]
+    );
+
+    const gradient = ctx.createLinearGradient(0, 0, 0, height);
+
+    gradient.addColorStop(0, `rgb(${top.join(",")})`);
+    gradient.addColorStop(1, `rgb(${bottom.join(",")})`);
+
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, width, height);
+
+}
+
+/* =====================================================
+   CLOUDS
+   Rounded overlapping cloud formations
+===================================================== */
+
+const clouds = [];
+
+for (let i = 0; i < 28; i++) {
+
+    const size = 90 + Math.random() * 100;
+
+    clouds.push({
+        x: Math.random() * 2000,
+        y: Math.random() * 1200,
+        size: size,
+        speed: 0.15 + Math.random() * 0.2,
+        opacity: 0.35 + Math.random() * 0.25,
+        puffs: Array.from({length: 5}, (_, j) => ({
+            x: (j - 2) * size * 0.36,
+            y: Math.random() * size * 0.22,
+            radius: size * (0.32 + Math.random() * 0.12)
+        }))
+    });
+
+}
+
+function drawClouds() {
+
+    const base = getColor(
+        scrollProgress,
+        [255, 255, 255],
+        [145, 65, 48],
+        [35, 35, 75]
+    );
+
+    const shade = getColor(
+        scrollProgress,
+        [170, 190, 210],
+        [75, 35, 42],
+        [10, 15, 42]
+    );
+
+    clouds.forEach(cloud => {
+
+        cloud.x += cloud.speed;
+
+        if (cloud.x > width + 250) {
+            cloud.x = -250;
+        }
+
+        const x = cloud.x % (width + 250);
+        const y = cloud.y / 1200 * height;
+        const size = cloud.size;
+
+        ctx.save();
+
+        ctx.globalAlpha = cloud.opacity;
+
+        /* Cloud shadow */
+
+        ctx.fillStyle = `rgb(${shade.join(",")})`;
+        ctx.beginPath();
+
+        cloud.puffs.forEach(puff => {
+            ctx.moveTo(x + puff.x + puff.radius, y + puff.y + size * 0.18);
+            ctx.arc(
+                x + puff.x,
+                y + puff.y + size * 0.18,
+                puff.radius,
+                0,
+                Math.PI * 2
+            );
+        });
+
+        ctx.fill();
+
+        /* Cloud tops */
+
+        ctx.fillStyle = `rgb(${base.join(",")})`;
+        ctx.beginPath();
+
+        cloud.puffs.forEach(puff => {
+            ctx.moveTo(x + puff.x + puff.radius, y + puff.y);
+            ctx.arc(
+                x + puff.x,
+                y + puff.y,
+                puff.radius,
+                0,
+                Math.PI * 2
+            );
+        });
+
+        ctx.fill();
+
+        ctx.restore();
+
+    });
+
+}
+
+/* =====================================================
+   RAIN
+===================================================== */
+
+const rain = [];
+
+for (let i = 0; i < 180; i++) {
+    rain.push({
+        x: Math.random() * 2000,
+        y: Math.random() * 1200,
+        speed: 8 + Math.random() * 7,
+        length: 10 + Math.random() * 15
+    });
+}
+
+function drawRain() {
+
+    const amount = Math.max(
+        0,
+        Math.min(1, (scrollProgress - 0.55) / 0.4)
+    );
+
+    if (amount <= 0) return;
+
+    ctx.save();
+
+    ctx.strokeStyle = `rgba(210,220,245,${amount * 0.35})`;
+    ctx.lineWidth = 1;
+    ctx.filter = "blur(0.8px)";
+
+    rain.forEach(drop => {
+
+        drop.y += drop.speed;
+        drop.x -= 1.5;
+
+        if (drop.y > height) {
+            drop.y = -20;
+            drop.x = Math.random() * width;
+        }
+
+        if (drop.x < 0) drop.x = width;
+
+        ctx.beginPath();
+        ctx.moveTo(drop.x, drop.y);
+        ctx.lineTo(drop.x - 3, drop.y + drop.length);
+        ctx.stroke();
+
+    });
+
+    ctx.restore();
+
+}
+
+/* =====================================================
+   LIGHTNING
+===================================================== */
+
+let flash = 0;
+let flashTimer = 0;
+
+function drawLightning() {
+
+    if (
+        scrollProgress > 0.75 &&
+        flashTimer <= 0 &&
+        Math.random() < 0.0005
+    ) {
+        flash = 0.07;
+        flashTimer = 3;
+    }
+
+    if (flashTimer > 0) {
+        lightning.style.opacity = flash;
+        flash *= 0.5;
+        flashTimer--;
+    } else {
+        lightning.style.opacity = 0;
+    }
+
+}
+
+/* =====================================================
+   MAIN ANIMATION
+===================================================== */
 
 function animate() {
 
-  ctx.clearRect(0,0,canvas.width,canvas.height);
+    drawSky();
+    drawClouds();
+    drawRain();
+    drawLightning();
 
-  ctx.fillStyle = "white";
+    requestAnimationFrame(animate);
 
-  stars.forEach(star => {
-
-    ctx.beginPath();
-    ctx.arc(star.x, star.y, star.r, 0, Math.PI*2);
-    ctx.fill();
-
-    star.y += star.s;
-
-    if(star.y > canvas.height){
-      star.y = 0;
-      star.x = Math.random()*canvas.width;
-    }
-
-  });
-
-  requestAnimationFrame(animate);
 }
 
 animate();
 
-/* SCROLL FADE IN */
+/* =====================================================
+   SCROLL FADE
+===================================================== */
 
-const observer = new IntersectionObserver((entries)=>{
+const observer = new IntersectionObserver(entries => {
 
-entries.forEach(entry=>{
-
-if(entry.isIntersecting){
-entry.target.classList.add("show");
-}
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add("show");
+        }
+    });
 
 });
 
-});
-
-document.querySelectorAll(".fade").forEach(el=>{
-observer.observe(el);
+document.querySelectorAll(".fade").forEach(el => {
+    observer.observe(el);
 });
 
 </script>
