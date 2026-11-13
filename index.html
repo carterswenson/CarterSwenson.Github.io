@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,505 +9,14 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+/* =====================================================
+   GENERAL
+===================================================== */
 
-html{
-    scroll-behavior:smooth;
-}
-
-body{
-    font-family:'Inter',sans-serif;
-    background:#050816;
-    color:white;
-    overflow-x:hidden;
-    line-height:1.6;
-}
-
-canvas{
-    position:fixed;
-    inset:0;
-    z-index:-2;
-}
-
-body::before{
-    content:"";
-    position:fixed;
-    inset:0;
-    background:
-        radial-gradient(circle at 15% 20%, rgba(70,120,255,.20), transparent 30%),
-        radial-gradient(circle at 80% 30%, rgba(0,200,255,.15), transparent 25%),
-        radial-gradient(circle at 60% 80%, rgba(120,0,255,.15), transparent 30%);
-    filter:blur(60px);
-    z-index:-1;
-}
-
-/* NAVBAR */
-
-nav{
-    position:fixed;
-    top:0;
-    width:100%;
-    z-index:999;
-    padding:20px 8%;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    background:rgba(5,8,22,.65);
-    backdrop-filter:blur(15px);
-}
-
-.logo{
-    font-weight:700;
-    font-size:1.25rem;
-}
-
-.nav-links{
-    display:flex;
-    gap:25px;
-}
-
-nav a{
-    text-decoration:none;
-    color:white;
-    transition:.3s;
-}
-
-nav a:hover{
-    color:#74a8ff;
-}
-
-/* HERO */
-
-.hero{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    padding:100px 8%;
-}
-
-.hero-container{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:60px;
-    flex-wrap:wrap;
-}
-
-.profile-image{
-    width:320px;
-    height:320px;
-
-    object-fit:cover;
-
-    border-radius:50%;
-
-    border:4px solid rgba(255,255,255,.15);
-
-    box-shadow:
-    0 0 40px rgba(80,140,255,.4),
-    0 0 80px rgba(80,140,255,.2);
-
-    transition:.4s;
-}
-
-.profile-image:hover{
-    transform:scale(1.03);
-}
-
-.hero-text{
-    max-width:650px;
-}
-
-.hero-text h1{
-    font-size:4rem;
-    margin-bottom:10px;
-}
-
-.hero-text span{
-    color:#74a8ff;
-}
-
-.subtitle{
-    font-size:1.3rem;
-    color:#d1daf0;
-    margin-bottom:25px;
-}
-
-.intro{
-    color:#b2bfd9;
-    font-size:1.05rem;
-}
-
-.hero-buttons{
-    display:flex;
-    gap:15px;
-    flex-wrap:wrap;
-    margin-top:30px;
-}
-
-.btn{
-    display:inline-block;
-    padding:14px 30px;
-    border-radius:999px;
-    background:#2e77ff;
-    text-decoration:none;
-    color:white;
-    transition:.3s;
-}
-
-.btn:hover{
-    transform:translateY(-3px);
-}
-
-.btn-outline{
-    background:transparent;
-    border:1px solid rgba(255,255,255,.2);
-}
-
-.btn-outline:hover{
-    background:rgba(255,255,255,.08);
-}
-
-/* SECTIONS */
-
-section{
-    padding:100px 10%;
-}
-
-.section-title{
-    font-size:2.5rem;
-    margin-bottom:40px;
-}
-
-/* CARDS */
-
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:25px;
-}
-
-.card{
-    background:rgba(255,255,255,.05);
-
-    border:1px solid rgba(255,255,255,.08);
-
-    backdrop-filter:blur(14px);
-
-    border-radius:20px;
-
-    padding:30px;
-
-    transition:.3s;
-}
-
-.card:hover{
-    transform:translateY(-8px);
-
-    box-shadow:
-    0 0 25px rgba(100,150,255,.25);
-}
-
-.card h3{
-    margin-bottom:10px;
-}
-
-/* ABOUT */
-
-.about-card{
-    max-width:1000px;
-    margin:auto;
-}
-
-/* CONTACT */
-
-.contact-links a{
-    color:#74a8ff;
-    text-decoration:none;
-}
-
-/* FOOTER */
-
-footer{
-    text-align:center;
-    padding:50px;
-    color:#8a97b8;
-}
-
-/* SCROLL ANIMATIONS */
-
-.fade{
-    opacity:0;
-    transform:translateY(40px);
-    transition:1s;
-}
-
-.fade.show{
-    opacity:1;
-    transform:translateY(0);
-}
-
-@media(max-width:900px){
-
-.hero-text{
-    text-align:center;
-}
-
-.hero-text h1{
-    font-size:3rem;
-}
-
-.hero-buttons{
-    justify-content:center;
-}
-
-.nav-links{
-    gap:15px;
-}
-
-}
-
-</style>
-</head>
-
-<body>
-
-<canvas id="stars"></canvas>
-
-<nav>
-
-    <div>
-    <a href="index.html" style="text-decoration:none;color:white;">
-        Carter Swenson
-    </a>
-    </div>
-
-    <div class="nav-links">
-        <a href="about.html">About</a>
-        <a href="research.html">Research</a>
-        <a href="outreach.html">Outreach</a>
-        <a href="contact.html">Contact</a>
-        <a href="CV for Carter Swenson.pdf">CV</a>
-    </div>
-
-</nav>
-
-<section class="hero">
-
-<div class="hero-container">
-
-<img
-src="images/photo-grad-erwin_trevor.png"
-alt="Trevor Erwin"
-class="profile-image"
->
-
-<div class="hero-text">
-
-<h1>
-Trevor <span>Erwin</span>
-</h1>
-
-<p class="subtitle">
-Physics • Astronomy • Planetary Science
-</p>
-
-<p class="intro">
-
-Exploring origins of life, planetary atmospheres,
-exoplanets, and scientific computing.
-
-I enjoy using data and computation to better understand
-the physical processes that shape our universe.<br>
-<br>
-
-<i>Current graduate student studying planetary science at Purdue University
-</i>
-
-</p>
-
-<div class="hero-buttons">
-
-<a href="research.html" class="btn">
-Research
-</a>
-
-<a href="about.html" class="btn btn-outline">
-About
-</a>
-
-<a href="outreach.html" class="btn btn-outline">
-Outreach
-</a>
-
-<a href="CV for Trevor Erwin.pdf" class="btn btn-outline">
-CV
-</a>
-
-<a href="contact.html" class="btn btn-outline">
-Contact
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<section class="fade">
-
-<h2 class="section-title">
-About
-</h2>
-
-<div class="card about-card">
-
-<p>
-
-I'm a Planetary Science graduate student with interests spanning observational astronomy, 
-atmospheric science, computational modeling, surface processes
-and scientific visualization.
-
-My work focuses on understanding complex physical
-systems through data analysis, mathematical modeling,
-and simulation.
-
-</p>
-
-</div>
-
-</section>
-
-<section class="fade">
-
-<h2 class="section-title">
-Research Interests
-</h2>
-
-<div class="grid">
-
-<div class="card">
-<h3>Brown Dwarfs</h3>
-
-<p>
-Atmospheric properties, stellar evolution, 
-detection methods,  and cloud modeling.
-</p>
-</div>
-
-<div class="card">
-<h3>Exoplanets and Atmospheres</h3>
-<p>
-Detection methods, atmospheric characterization and evolution,
-planet formation, and habitability.
-</p>
-</div>
-
-<div class="card">
-<h3>Surface Processes</h3>
-<p>
-Studying Crater Rays and Lunar cold spots, 
-as well as surface processes on icy moons like Europa.
-</p>
-</div>
-
-
-</div>
-
-</section>
-
-<section class="fade">
-
-<h2 class="section-title">
-Featured Work
-</h2>
-
-<div class="grid">
-
-<div class="card">
-<h3>Atmospheric Modeling</h3>
-<p>
-Using 1D atmospheric models to explore the behavior of planetary atmospheres.
-</p>
-</div>
-
-<div class="card">
-<h3>Surface cratering on rocky bodies</h3>
-<p>
-Studying the surface features formed by impact craters on planets and moons and connecting their formation mechanisms.
-</p>
-</div>
-
-<div class="card">
-<h3>Surface weathering on Icy Moons</h3>
-<p>
-Conducting experiemnts simulating the surface processes on moons like Europa and Charon.
-</p>
-</div>
-
-</div>
-
-</section>
-
-<section class="fade">
-
-<h2 class="section-title">
-Connect
-</h2>
-
-<div class="card contact-links">
-
-<p>
-GitHub:
-<a href="https://github.com/TrevorPErwin">
-github.com/TrevorPErwin
-</a>
-</p>
-
-<br>
-
-<p>
-LinkedIn: https://www.linkedin.com/in/trevor-erwin-7733a8272/
-</p>
-
-<br>
-
-<p>
-Email: erwin19@purdue.edu
-</p>
-
-</div>
-
-</section>
-
-<footer>
-
-© 11/2026 Carter Swenson
-
-</footer>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Atmospheric Website</title>
-
-<style>
 * {
     margin: 0;
     padding: 0;
@@ -518,184 +28,58 @@ html {
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', sans-serif;
+    background: #101a2b;
     color: white;
     overflow-x: hidden;
-}
-
-#atmosphere {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -2;
-    pointer-events: none;
-}
-
-#lightning {
-    position: fixed;
-    inset: 0;
-    background: rgba(190, 200, 255, 0.06);
-    opacity: 0;
-    z-index: -1;
-    pointer-events: none;
-}
-
-.content {
-    position: relative;
-    z-index: 1;
-}
-
-section {
-    min-height: 100vh;
-    padding: 120px 10%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-section h1 {
-    font-size: clamp(40px, 7vw, 80px);
-    margin-bottom: 20px;
-}
-
-section p {
-    font-size: 20px;
-    max-width: 650px;
-    line-height: 1.7;
-}
-
-.glass {
-    background: rgba(10, 15, 30, 0.15);
-    backdrop-filter: blur(5px);
-    padding: 30px;
-    border-radius: 15px;
-    max-width: 750px;
-}
-
-.fade {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 1s ease, transform 1s ease;
-}
-
-.fade.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-</style>
-</head>
-
-<body>
-
-<canvas id="atmosphere"></canvas>
-<div id="lightning"></div>
-
-<div class="content">
-
-<section>
-    <div class="glass fade">
-        <h1>Welcome</h1>
-        <p>Welcome to my atmospheric science website.</p>
-    </div>
-</section>
-
-<section>
-    <div class="glass fade">
-        <h1>About Me</h1>
-        <p>Learn more about my background and interests.</p>
-    </div>
-</section>
-
-<section>
-    <div class="glass fade">
-        <h1>Research</h1>
-        <p>Exploring atmospheric chemistry and meteorology.</p>
-    </div>
-</section>
-
-<section>
-    <div class="glass fade">
-        <h1>Projects</h1>
-        <p>Research projects and scientific visualizations.</p>
-    </div>
-</section>
-
-<section>
-    <div class="glass fade">
-        <h1>Contact</h1>
-        <p>Get in touch!</p>
-    </div>
-</section>
-
-</div>
-
-<script>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Atmospheric Website</title>
-
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: Arial, sans-serif;
-    color: white;
-    overflow-x: hidden;
-    background: #17243b;
+    line-height: 1.6;
 }
 
 /* =====================================================
-   ATMOSPHERE
+   ATMOSPHERIC BACKGROUND
 ===================================================== */
 
 #atmosphere {
     position: fixed;
     inset: 0;
-    z-index: -3;
+    z-index: 0;
     overflow: hidden;
     pointer-events: none;
+
     background: linear-gradient(
         to bottom,
-        #327dbb,
-        #b86b55,
-        #11152e
+        #327dbb 0%,
+        #b86b55 50%,
+        #11152e 100%
     );
 }
 
-/* Two identical images create a continuous loop */
+/* Two copies allow continuous horizontal movement */
 
 .cloud-track {
     position: absolute;
-    inset: 0 auto 0 0;
+    top: 0;
+    left: 0;
+
+    display: flex;
     width: 200%;
     height: 100%;
-    display: flex;
+
     animation: cloudDrift 180s linear infinite;
     will-change: transform;
 }
 
 .cloud-track img {
+    display: block;
     width: 50%;
     height: 100%;
     flex-shrink: 0;
+
     object-fit: cover;
-    object-position: center 0%;
+    object-position: center var(--cloud-depth, 0%);
 }
 
-/* Slow left-to-right movement */
+/* Move clouds slowly from left to right */
 
 @keyframes cloudDrift {
     from {
@@ -708,47 +92,47 @@ body {
 }
 
 /* =====================================================
-   COLOR TRANSITION AS USER SCROLLS
+   SCROLL-BASED COLOR TRANSITION
 ===================================================== */
 
 #color-overlay {
     position: fixed;
     inset: 0;
-    z-index: -2;
+    z-index: 1;
     pointer-events: none;
 
     background: linear-gradient(
         to bottom,
-        rgba(20, 35, 75, 0),
-        rgba(105, 35, 45, 0.12),
-        rgba(5, 10, 35, 0.55)
+        rgba(20, 35, 75, 0.03),
+        rgba(105, 35, 45, 0.18),
+        rgba(5, 10, 35, 0.65)
     );
 
     opacity: var(--storm-progress, 0);
-    transition: opacity 0.3s ease;
 }
 
 /* =====================================================
-   RAIN
+   SUBTLE RAIN
 ===================================================== */
 
 #rain {
     position: fixed;
     inset: 0;
-    z-index: -1;
+    z-index: 2;
     pointer-events: none;
+
     opacity: var(--rain-opacity, 0);
 
-    background-image:
-        repeating-linear-gradient(
-            105deg,
-            transparent 0px,
-            transparent 24px,
-            rgba(220, 230, 255, 0.12) 25px,
-            transparent 26px
-        );
+    background-image: repeating-linear-gradient(
+        105deg,
+        transparent 0px,
+        transparent 24px,
+        rgba(220, 230, 255, 0.12) 25px,
+        transparent 26px
+    );
 
     background-size: 90px 120px;
+
     animation: rainFall 2.5s linear infinite;
 }
 
@@ -763,13 +147,13 @@ body {
 }
 
 /* =====================================================
-   LIGHTNING
+   SUBTLE LIGHTNING
 ===================================================== */
 
 #lightning {
     position: fixed;
     inset: 0;
-    z-index: 0;
+    z-index: 2;
     pointer-events: none;
 
     background: rgba(175, 190, 255, 0.12);
@@ -781,62 +165,267 @@ body {
 }
 
 @keyframes lightningFlash {
-    0%   { opacity: 0; }
-    12%  { opacity: 0.35; }
-    25%  { opacity: 0.08; }
-    40%  { opacity: 0.18; }
-    100% { opacity: 0; }
+    0% {
+        opacity: 0;
+    }
+
+    12% {
+        opacity: 0.22;
+    }
+
+    25% {
+        opacity: 0.05;
+    }
+
+    40% {
+        opacity: 0.12;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }
 
 /* =====================================================
-   WEBSITE CONTENT
+   NAVBAR
+===================================================== */
+
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+
+    padding: 20px 8%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: rgba(5, 8, 22, 0.65);
+    backdrop-filter: blur(15px);
+}
+
+.logo {
+    font-weight: 700;
+    font-size: 1.25rem;
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #74a8ff;
+}
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero {
+    position: relative;
+    z-index: 3;
+
+    min-height: 100vh;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 100px 8%;
+}
+
+.hero-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 60px;
+    flex-wrap: wrap;
+}
+
+.profile-image {
+    width: 320px;
+    height: 320px;
+
+    object-fit: cover;
+    border-radius: 50%;
+
+    border: 4px solid rgba(255, 255, 255, 0.15);
+
+    box-shadow:
+        0 0 40px rgba(80, 140, 255, 0.4),
+        0 0 80px rgba(80, 140, 255, 0.2);
+
+    transition: transform 0.4s;
+}
+
+.profile-image:hover {
+    transform: scale(1.03);
+}
+
+.hero-text {
+    max-width: 650px;
+}
+
+.hero-text h1 {
+    font-size: 4rem;
+    margin-bottom: 10px;
+}
+
+.hero-text span {
+    color: #74a8ff;
+}
+
+.subtitle {
+    font-size: 1.3rem;
+    color: #d1daf0;
+    margin-bottom: 25px;
+}
+
+.intro {
+    color: #e0e6f2;
+    font-size: 1.05rem;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 14px 30px;
+
+    border-radius: 999px;
+    background: #2e77ff;
+
+    text-decoration: none;
+    color: white;
+
+    transition: 0.3s;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* =====================================================
+   WEBSITE SECTIONS
 ===================================================== */
 
 .content {
     position: relative;
-    z-index: 1;
+    z-index: 3;
 }
 
-section {
-    min-height: 100vh;
-    padding: 120px 10%;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+section:not(.hero) {
+    position: relative;
+    min-height: 70vh;
+    padding: 100px 10%;
 }
 
-section h1 {
-    font-size: clamp(40px, 7vw, 80px);
-    font-weight: 500;
-    letter-spacing: -2px;
-    margin-bottom: 20px;
-}
-
-section p {
-    font-size: 19px;
-    max-width: 650px;
-    line-height: 1.8;
-    color: rgba(255,255,255,0.92);
-}
-
-.glass {
-    background: rgba(10, 18, 35, 0.22);
-    border: 1px solid rgba(255,255,255,0.13);
-    backdrop-filter: blur(8px);
-
-    padding: 35px;
-    border-radius: 8px;
-    max-width: 750px;
+.section-title {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
 }
 
 /* =====================================================
-   SECTION FADE
+   CARDS
+===================================================== */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(280px, 1fr)
+    );
+
+    gap: 25px;
+}
+
+.card {
+    background: rgba(10, 18, 35, 0.38);
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    backdrop-filter: blur(14px);
+
+    border-radius: 12px;
+    padding: 30px;
+
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 0 25px rgba(100, 150, 255, 0.2);
+}
+
+.card h3 {
+    margin-bottom: 10px;
+}
+
+.about-card {
+    max-width: 1000px;
+    margin: auto;
+}
+
+/* =====================================================
+   CONTACT
+===================================================== */
+
+.contact-links a {
+    color: #74a8ff;
+    text-decoration: none;
+}
+
+.contact-links a:hover {
+    text-decoration: underline;
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer {
+    position: relative;
+    z-index: 3;
+
+    text-align: center;
+    padding: 50px;
+
+    color: #b0bad0;
+}
+
+/* =====================================================
+   SCROLL ANIMATIONS
 ===================================================== */
 
 .fade {
     opacity: 0;
-    transform: translateY(25px);
+    transform: translateY(40px);
+
     transition:
         opacity 1s ease,
         transform 1s ease;
@@ -848,10 +437,64 @@ section p {
 }
 
 /* =====================================================
-   ACCESSIBILITY / PERFORMANCE
+   MOBILE
 ===================================================== */
 
-@media (prefers-reduced-motion: reduce) {
+@media(max-width: 900px) {
+
+    .hero-text {
+        text-align: center;
+    }
+
+    .hero-text h1 {
+        font-size: 3rem;
+    }
+
+    .hero-buttons {
+        justify-content: center;
+    }
+
+    .nav-links {
+        gap: 12px;
+        font-size: 0.85rem;
+    }
+
+    .profile-image {
+        width: 240px;
+        height: 240px;
+    }
+
+}
+
+@media(max-width: 600px) {
+
+    nav {
+        padding: 15px 5%;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .hero {
+        padding: 150px 6% 80px;
+    }
+
+    section:not(.hero) {
+        padding: 80px 6%;
+    }
+
+}
+
+/* =====================================================
+   REDUCED MOTION
+===================================================== */
+
+@media(prefers-reduced-motion: reduce) {
+
     html {
         scroll-behavior: auto;
     }
@@ -866,6 +509,7 @@ section p {
         transform: none;
         transition: none;
     }
+
 }
 
 </style>
@@ -873,12 +517,16 @@ section p {
 
 <body>
 
-<!-- ATMOSPHERIC BACKGROUND -->
+<!-- =================================================
+     BACKGROUND LAYERS
+================================================= -->
 
 <div id="atmosphere">
     <div class="cloud-track">
+
         <img src="atmospheric_clouds.webp" alt="">
         <img src="atmospheric_clouds.webp" alt="">
+
     </div>
 </div>
 
@@ -887,47 +535,277 @@ section p {
 <div id="lightning"></div>
 
 
-<!-- WEBSITE CONTENT -->
+<!-- =================================================
+     NAVIGATION
+================================================= -->
+
+<nav>
+
+    <div class="logo">
+        <a href="index.html" style="text-decoration:none;color:white;">
+            Carter Swenson
+        </a>
+    </div>
+
+    <div class="nav-links">
+        <a href="about.html">About</a>
+        <a href="research.html">Research</a>
+        <a href="outreach.html">Outreach</a>
+        <a href="contact.html">Contact</a>
+        <a href="CV for Carter Swenson.pdf">CV</a>
+    </div>
+
+</nav>
+
+
+<!-- =================================================
+     MAIN CONTENT
+================================================= -->
 
 <div class="content">
 
-    <section>
-        <div class="glass fade">
-            <h1>Welcome</h1>
-            <p>Welcome to my atmospheric science website.</p>
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-container">
+
+            <img
+                src="images/photo-grad-erwin_trevor.png"
+                alt="Trevor Erwin"
+                class="profile-image"
+            >
+
+            <div class="hero-text">
+
+                <h1>
+                    Trevor <span>Erwin</span>
+                </h1>
+
+                <p class="subtitle">
+                    Physics • Astronomy • Planetary Science
+                </p>
+
+                <p class="intro">
+
+                    Exploring origins of life, planetary atmospheres,
+                    exoplanets, and scientific computing.
+
+                    I enjoy using data and computation to better understand
+                    the physical processes that shape our universe.
+
+                    <br><br>
+
+                    <i>
+                        Current graduate student studying planetary science at Purdue University
+                    </i>
+
+                </p>
+
+                <div class="hero-buttons">
+
+                    <a href="research.html" class="btn">
+                        Research
+                    </a>
+
+                    <a href="about.html" class="btn btn-outline">
+                        About
+                    </a>
+
+                    <a href="outreach.html" class="btn btn-outline">
+                        Outreach
+                    </a>
+
+                    <a href="CV for Trevor Erwin.pdf" class="btn btn-outline">
+                        CV
+                    </a>
+
+                    <a href="contact.html" class="btn btn-outline">
+                        Contact
+                    </a>
+
+                </div>
+
+            </div>
+
         </div>
+
     </section>
 
-    <section>
-        <div class="glass fade">
-            <h1>About Me</h1>
-            <p>Learn more about my background and interests.</p>
+
+    <!-- ABOUT -->
+
+    <section class="fade">
+
+        <h2 class="section-title">
+            About
+        </h2>
+
+        <div class="card about-card">
+
+            <p>
+                I'm a Planetary Science graduate student with interests spanning observational astronomy,
+                atmospheric science, computational modeling, surface processes
+                and scientific visualization.
+
+                My work focuses on understanding complex physical
+                systems through data analysis, mathematical modeling,
+                and simulation.
+            </p>
+
         </div>
+
     </section>
 
-    <section>
-        <div class="glass fade">
-            <h1>Research</h1>
-            <p>Exploring atmospheric chemistry and meteorology.</p>
+
+    <!-- RESEARCH INTERESTS -->
+
+    <section class="fade">
+
+        <h2 class="section-title">
+            Research Interests
+        </h2>
+
+        <div class="grid">
+
+            <div class="card">
+
+                <h3>Brown Dwarfs</h3>
+
+                <p>
+                    Atmospheric properties, stellar evolution,
+                    detection methods, and cloud modeling.
+                </p>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Exoplanets and Atmospheres</h3>
+
+                <p>
+                    Detection methods, atmospheric characterization and evolution,
+                    planet formation, and habitability.
+                </p>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Surface Processes</h3>
+
+                <p>
+                    Studying Crater Rays and Lunar cold spots,
+                    as well as surface processes on icy moons like Europa.
+                </p>
+
+            </div>
+
         </div>
+
     </section>
 
-    <section>
-        <div class="glass fade">
-            <h1>Projects</h1>
-            <p>Research projects and scientific visualizations.</p>
+
+    <!-- FEATURED WORK -->
+
+    <section class="fade">
+
+        <h2 class="section-title">
+            Featured Work
+        </h2>
+
+        <div class="grid">
+
+            <div class="card">
+
+                <h3>Atmospheric Modeling</h3>
+
+                <p>
+                    Using 1D atmospheric models to explore the behavior
+                    of planetary atmospheres.
+                </p>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Surface cratering on rocky bodies</h3>
+
+                <p>
+                    Studying the surface features formed by impact craters
+                    on planets and moons and connecting their formation mechanisms.
+                </p>
+
+            </div>
+
+            <div class="card">
+
+                <h3>Surface weathering on Icy Moons</h3>
+
+                <p>
+                    Conducting experiments simulating the surface processes
+                    on moons like Europa and Charon.
+                </p>
+
+            </div>
+
         </div>
+
     </section>
 
-    <section>
-        <div class="glass fade">
-            <h1>Contact</h1>
-            <p>Get in touch!</p>
+
+    <!-- CONTACT -->
+
+    <section class="fade">
+
+        <h2 class="section-title">
+            Connect
+        </h2>
+
+        <div class="card contact-links">
+
+            <p>
+                GitHub:
+                <a href="https://github.com/TrevorPErwin" target="_blank" rel="noopener noreferrer">
+                    github.com/TrevorPErwin
+                </a>
+            </p>
+
+            <br>
+
+            <p>
+                LinkedIn:
+                <a href="https://www.linkedin.com/in/trevor-erwin-7733a8272/" target="_blank" rel="noopener noreferrer">
+                    Trevor Erwin
+                </a>
+            </p>
+
+            <br>
+
+            <p>
+                Email:
+                <a href="mailto:erwin19@purdue.edu">
+                    erwin19@purdue.edu
+                </a>
+            </p>
+
         </div>
+
     </section>
 
 </div>
 
+
+<!-- FOOTER -->
+
+<footer>
+    © 11/2026 Carter Swenson
+</footer>
+
+
+<!-- =================================================
+     JAVASCRIPT
+================================================= -->
 
 <script>
 
@@ -948,21 +826,26 @@ function updateAtmosphere() {
         ? window.scrollY / maxScroll
         : 0;
 
-    /* Move through the vertical cloud scene */
+    /* Move down through the cloud image */
 
-    document.querySelectorAll(".cloud-track img").forEach(img => {
-        img.style.objectPosition =
-            `center ${scrollProgress * 100}%`;
-    });
+    document.documentElement.style.setProperty(
+        "--cloud-depth",
+        `${scrollProgress * 100}%`
+    );
 
-    /* Gradually darken the atmosphere */
+    /* Darken the atmosphere gradually */
+
+    const stormProgress = Math.max(
+        0,
+        Math.min(1, (scrollProgress - 0.25) / 0.75)
+    );
 
     document.documentElement.style.setProperty(
         "--storm-progress",
-        Math.max(0, Math.min(1, (scrollProgress - 0.25) / 0.75))
+        stormProgress
     );
 
-    /* Gradually introduce rain */
+    /* Introduce rain gradually */
 
     const rainAmount = Math.max(
         0,
@@ -992,14 +875,20 @@ updateAtmosphere();
 
 
 /* =====================================================
-   OCCASIONAL SUBTLE LIGHTNING
+   OCCASIONAL LIGHTNING
 ===================================================== */
 
 const lightning = document.getElementById("lightning");
 
+const reducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+).matches;
+
 function scheduleLightning() {
 
-    const delay = 7000 + Math.random() * 11000;
+    if (reducedMotion) return;
+
+    const delay = 9000 + Math.random() * 14000;
 
     setTimeout(() => {
 
@@ -1007,7 +896,7 @@ function scheduleLightning() {
 
             lightning.classList.remove("flash");
 
-            /* Restart the CSS animation */
+            /* Restart the animation */
 
             void lightning.offsetWidth;
 
