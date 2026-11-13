@@ -529,7 +529,7 @@ body {
 }
 
 /* =====================================================
-   ANIMATED ATMOSPHERE BACKGROUND
+   ANIMATED ATMOSPHERE
 ===================================================== */
 
 #atmosphere {
@@ -541,12 +541,10 @@ body {
     pointer-events: none;
 }
 
-/* Lightning overlay */
-
 #lightning {
     position: fixed;
     inset: 0;
-    background: white;
+    background: rgba(220, 225, 255, 0.08);
     opacity: 0;
     z-index: -1;
     pointer-events: none;
@@ -580,11 +578,9 @@ section p {
     line-height: 1.7;
 }
 
-/* Optional content styling */
-
 .glass {
-    background: rgba(0, 0, 0, 0.12);
-    backdrop-filter: blur(5px);
+    background: rgba(10, 15, 30, 0.15);
+    backdrop-filter: blur(8px);
     padding: 30px;
     border-radius: 15px;
     max-width: 750px;
@@ -610,13 +606,8 @@ section p {
 
 <body>
 
-<!-- ATMOSPHERE CANVAS -->
 <canvas id="atmosphere"></canvas>
 <div id="lightning"></div>
-
-<!-- =====================================================
-     WEBSITE CONTENT
-===================================================== -->
 
 <div class="content">
 
@@ -671,10 +662,6 @@ section p {
 
 </div>
 
-<!-- =====================================================
-     JAVASCRIPT ANIMATION
-===================================================== -->
-
 <script>
 
 /* =====================================================
@@ -690,12 +677,15 @@ let width;
 let height;
 
 function resize() {
+
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
+
 }
 
 resize();
 window.addEventListener("resize", resize);
+
 
 /* =====================================================
    SCROLL PROGRESS
@@ -714,101 +704,86 @@ window.addEventListener("scroll", () => {
 
 });
 
-/* =====================================================
-   ATMOSPHERIC PARTICLES
-===================================================== */
-
-const particles = [];
-
-for (let i = 0; i < 350; i++) {
-
-    particles.push({
-        x: Math.random() * 2000,
-        y: Math.random() * 1200,
-        size: Math.random() * 3 + 0.5,
-        speed: Math.random() * 1.5 + 0.3,
-        drift: Math.random() * 0.8 - 0.4,
-        alpha: Math.random() * 0.5 + 0.2
-    });
-
-}
 
 /* =====================================================
-   CLOUD LAYERS
-===================================================== */
-
-const clouds = [];
-
-for (let i = 0; i < 45; i++) {
-
-    clouds.push({
-        x: Math.random() * 2000,
-        y: Math.random() * 1200,
-        size: Math.random() * 150 + 80,
-        speed: Math.random() * 0.35 + 0.1,
-        alpha: Math.random() * 0.25 + 0.1
-    });
-
-}
-
-/* =====================================================
-   LIGHTNING SETTINGS
-===================================================== */
-
-let lightningOpacity = 0;
-let lightningTimer = 0;
-let lightningDuration = 0;
-
-function triggerLightning() {
-
-    if (scrollProgress > 0.72 && Math.random() < 0.015) {
-
-        lightningOpacity = 0.8;
-        lightningDuration = 5;
-
-    }
-
-}
-
-/* =====================================================
-   ATMOSPHERE COLORS
+   COLOR TRANSITIONS
+   BLUE/WHITE -> ORANGE/RED -> PURPLE/DARK BLUE
 ===================================================== */
 
 function lerp(a, b, t) {
     return a + (b - a) * t;
 }
 
+function getColor(progress, blue, orange, purple) {
+
+    let color;
+
+    if (progress < 0.5) {
+
+        const t = progress / 0.5;
+
+        color = [
+            lerp(blue[0], orange[0], t),
+            lerp(blue[1], orange[1], t),
+            lerp(blue[2], orange[2], t)
+        ];
+
+    } else {
+
+        const t = (progress - 0.5) / 0.5;
+
+        color = [
+            lerp(orange[0], purple[0], t),
+            lerp(orange[1], purple[1], t),
+            lerp(orange[2], purple[2], t)
+        ];
+
+    }
+
+    return color.map(v => Math.round(v));
+
+}
+
+
+/* =====================================================
+   SKY
+===================================================== */
+
 function drawSky() {
 
-    const storm = Math.max(
-        0,
-        Math.min(1, (scrollProgress - 0.15) / 0.85)
+    const topColor = getColor(
+        scrollProgress,
+        [35, 135, 220],
+        [185, 75, 35],
+        [24, 14, 65]
     );
 
-    const topR = lerp(35, 8, storm);
-    const topG = lerp(145, 17, storm);
-    const topB = lerp(230, 32, storm);
+    const bottomColor = getColor(
+        scrollProgress,
+        [155, 210, 245],
+        [110, 38, 40],
+        [12, 23, 55]
+    );
 
-    const bottomR = lerp(150, 28, storm);
-    const bottomG = lerp(210, 35, storm);
-    const bottomB = lerp(250, 48, storm);
-
-    const gradient = ctx.createLinearGradient(0, 0, 0, height);
+    const gradient = ctx.createLinearGradient(
+        0, 0, 0, height
+    );
 
     gradient.addColorStop(
         0,
-        `rgb(${topR}, ${topG}, ${topB})`
+        `rgb(${topColor.join(",")})`
     );
 
     gradient.addColorStop(
         1,
-        `rgb(${bottomR}, ${bottomG}, ${bottomB})`
+        `rgb(${bottomColor.join(",")})`
     );
 
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, height);
 
 }
+
 
 /* =====================================================
    SUNLIGHT
@@ -818,7 +793,7 @@ function drawSun() {
 
     const brightness = Math.max(
         0,
-        1 - scrollProgress * 2.5
+        1 - scrollProgress * 2.2
     );
 
     if (brightness <= 0) return;
@@ -829,12 +804,17 @@ function drawSun() {
         5,
         width * 0.75,
         height * 0.15,
-        height * 0.7
+        height * 0.8
     );
 
     gradient.addColorStop(
         0,
-        `rgba(255,255,210,${0.35 * brightness})`
+        `rgba(255,250,215,${0.4 * brightness})`
+    );
+
+    gradient.addColorStop(
+        0.4,
+        `rgba(255,240,200,${0.12 * brightness})`
     );
 
     gradient.addColorStop(
@@ -847,48 +827,106 @@ function drawSun() {
 
 }
 
+
 /* =====================================================
-   DRAW CLOUDS
+   CLOUD GENERATION
+===================================================== */
+
+const clouds = [];
+
+for (let i = 0; i < 65; i++) {
+
+    clouds.push({
+
+        x: Math.random() * 2000,
+        y: Math.random() * 1400,
+        size: Math.random() * 160 + 100,
+        speed: Math.random() * 0.3 + 0.05,
+        alpha: Math.random() * 0.2 + 0.15,
+        depth: Math.random()
+
+    });
+
+}
+
+
+/* =====================================================
+   REALISTIC CLOUD COLORS
 ===================================================== */
 
 function drawClouds() {
 
-    const storm = Math.max(
-        0,
-        Math.min(1, (scrollProgress - 0.1) / 0.9)
+    const storm = scrollProgress;
+
+    const cloudColor = getColor(
+        storm,
+        [255, 255, 255],
+        [190, 75, 48],
+        [37, 35, 80]
+    );
+
+    const shadowColor = getColor(
+        storm,
+        [165, 190, 215],
+        [75, 35, 42],
+        [8, 12, 38]
     );
 
     clouds.forEach(cloud => {
 
-        cloud.x += cloud.speed * (1 + storm * 2);
+        cloud.x += cloud.speed;
 
-        if (cloud.x > width + 200) {
-            cloud.x = -200;
+        if (cloud.x > width + 300) {
+            cloud.x = -300;
         }
 
-        const y = cloud.y % height;
+        const x = cloud.x % (width + 300);
+        const y = (cloud.y / 1400) * height;
 
-        const cloudSize = cloud.size * (1 + storm * 0.8);
+        const size = cloud.size * (1 + storm * 0.5);
 
-        const shade = lerp(255, 65, storm);
+        const shade = cloud.depth;
+
+        ctx.save();
+
+        /* Soft cloud edges */
+
+        ctx.filter = "blur(20px)";
+
+        /* Main cloud body */
 
         const gradient = ctx.createRadialGradient(
-            cloud.x,
-            y,
+            x,
+            y - size * 0.2,
             5,
-            cloud.x,
+            x,
             y,
-            cloudSize
+            size * 1.5
         );
 
         gradient.addColorStop(
             0,
-            `rgba(${shade},${shade},${shade},${cloud.alpha + storm * 0.25})`
+            `rgba(
+                ${cloudColor[0]},
+                ${cloudColor[1]},
+                ${cloudColor[2]},
+                ${cloud.alpha + 0.25}
+            )`
+        );
+
+        gradient.addColorStop(
+            0.45,
+            `rgba(
+                ${cloudColor[0]},
+                ${cloudColor[1]},
+                ${cloudColor[2]},
+                ${cloud.alpha}
+            )`
         );
 
         gradient.addColorStop(
             1,
-            "rgba(100,110,125,0)"
+            "rgba(0,0,0,0)"
         );
 
         ctx.fillStyle = gradient;
@@ -896,10 +934,10 @@ function drawClouds() {
         ctx.beginPath();
 
         ctx.ellipse(
-            cloud.x,
+            x,
             y,
-            cloudSize * 1.5,
-            cloudSize * 0.65,
+            size * 1.7,
+            size * 0.85,
             0,
             0,
             Math.PI * 2
@@ -907,59 +945,112 @@ function drawClouds() {
 
         ctx.fill();
 
-    });
 
-}
+        /* Additional cloud formations */
 
-/* =====================================================
-   MOVING ATMOSPHERIC PARTICLES
-===================================================== */
+        for (let j = 0; j < 6; j++) {
 
-function drawParticles() {
+            const offsetX = Math.sin(j * 2.4) * size * 0.9;
+            const offsetY = Math.cos(j * 3.1) * size * 0.35;
 
-    const storm = Math.max(
-        0,
-        Math.min(1, (scrollProgress - 0.35) / 0.65)
-    );
+            const puffSize = size * (
+                0.4 + Math.random() * 0.1
+            );
 
-    particles.forEach(p => {
+            const puffGradient = ctx.createRadialGradient(
+                x + offsetX,
+                y + offsetY - puffSize * 0.2,
+                2,
+                x + offsetX,
+                y + offsetY,
+                puffSize
+            );
 
-        p.x += p.drift + storm * 1.5;
-        p.y += p.speed * (0.3 + storm * 3);
+            puffGradient.addColorStop(
+                0,
+                `rgba(
+                    ${cloudColor[0]},
+                    ${cloudColor[1]},
+                    ${cloudColor[2]},
+                    ${cloud.alpha + 0.2}
+                )`
+            );
 
-        if (p.y > height) {
-            p.y = 0;
-            p.x = Math.random() * width;
+            puffGradient.addColorStop(
+                1,
+                "rgba(0,0,0,0)"
+            );
+
+            ctx.fillStyle = puffGradient;
+
+            ctx.beginPath();
+
+            ctx.ellipse(
+                x + offsetX,
+                y + offsetY,
+                puffSize * 1.2,
+                puffSize * 0.9,
+                0,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fill();
+
         }
 
-        if (p.x > width) p.x = 0;
-        if (p.x < 0) p.x = width;
 
-        ctx.fillStyle = `rgba(
-            255,
-            255,
-            255,
-            ${p.alpha * (0.3 + storm * 0.7)}
-        )`;
+        /* Dark cloud undersides */
+
+        const shadowGradient = ctx.createRadialGradient(
+            x,
+            y + size * 0.35,
+            5,
+            x,
+            y + size * 0.35,
+            size * 1.3
+        );
+
+        shadowGradient.addColorStop(
+            0,
+            `rgba(
+                ${shadowColor[0]},
+                ${shadowColor[1]},
+                ${shadowColor[2]},
+                ${0.15 + storm * 0.3}
+            )`
+        );
+
+        shadowGradient.addColorStop(
+            1,
+            "rgba(0,0,0,0)"
+        );
+
+        ctx.fillStyle = shadowGradient;
 
         ctx.beginPath();
 
-        ctx.arc(
-            p.x,
-            p.y,
-            p.size,
+        ctx.ellipse(
+            x,
+            y + size * 0.35,
+            size * 1.5,
+            size * 0.6,
+            0,
             0,
             Math.PI * 2
         );
 
         ctx.fill();
 
+        ctx.restore();
+
     });
 
 }
 
+
 /* =====================================================
-   RAIN
+   RAIN GENERATION
 ===================================================== */
 
 const raindrops = [];
@@ -967,13 +1058,22 @@ const raindrops = [];
 for (let i = 0; i < 500; i++) {
 
     raindrops.push({
+
         x: Math.random() * 2000,
         y: Math.random() * 1200,
-        speed: Math.random() * 12 + 8,
-        length: Math.random() * 20 + 10
+        speed: Math.random() * 12 + 7,
+        length: Math.random() * 25 + 12,
+        width: Math.random() * 1.5 + 0.5,
+        alpha: Math.random() * 0.3 + 0.1
+
     });
 
 }
+
+
+/* =====================================================
+   FUZZY, LAYERED RAIN
+===================================================== */
 
 function drawRain() {
 
@@ -984,47 +1084,98 @@ function drawRain() {
 
     if (rainAmount <= 0) return;
 
-    ctx.strokeStyle = `rgba(210,225,255,${rainAmount * 0.5})`;
-    ctx.lineWidth = 1;
+    ctx.save();
+
+    ctx.filter = "blur(1.5px)";
 
     raindrops.forEach(drop => {
 
-        drop.y += drop.speed;
+        drop.y += drop.speed * (0.5 + rainAmount);
         drop.x -= 2;
 
         if (drop.y > height) {
-            drop.y = -20;
+            drop.y = -30;
             drop.x = Math.random() * width;
         }
 
-        if (drop.x < 0) drop.x = width;
-
-        if (Math.random() < rainAmount) {
-
-            ctx.beginPath();
-
-            ctx.moveTo(drop.x, drop.y);
-
-            ctx.lineTo(
-                drop.x - 3,
-                drop.y + drop.length
-            );
-
-            ctx.stroke();
-
+        if (drop.x < 0) {
+            drop.x = width;
         }
+
+        if (Math.random() > rainAmount) return;
+
+        ctx.strokeStyle = `rgba(
+            215,
+            225,
+            245,
+            ${drop.alpha * rainAmount}
+        )`;
+
+        ctx.lineWidth = drop.width;
+
+        ctx.beginPath();
+
+        ctx.moveTo(drop.x, drop.y);
+
+        ctx.lineTo(
+            drop.x - 4,
+            drop.y + drop.length
+        );
+
+        ctx.stroke();
 
     });
 
+    ctx.restore();
+
+
+    /* Rain haze */
+
+    const haze = ctx.createLinearGradient(
+        0, 0, 0, height
+    );
+
+    haze.addColorStop(
+        0,
+        "rgba(160,170,200,0)"
+    );
+
+    haze.addColorStop(
+        1,
+        `rgba(170,185,215,${rainAmount * 0.12})`
+    );
+
+    ctx.fillStyle = haze;
+    ctx.fillRect(0, 0, width, height);
+
 }
+
 
 /* =====================================================
    LIGHTNING
 ===================================================== */
 
+let lightningOpacity = 0;
+let lightningDuration = 0;
+
+function triggerLightning() {
+
+    if (
+        scrollProgress > 0.75 &&
+        lightningDuration <= 0 &&
+        Math.random() < 0.0008
+    ) {
+
+        lightningOpacity = 0.10;
+        lightningDuration = 3;
+
+    }
+
+}
+
 function drawLightning() {
 
-    if (scrollProgress < 0.72) return;
+    if (scrollProgress < 0.75) return;
 
     triggerLightning();
 
@@ -1032,7 +1183,8 @@ function drawLightning() {
 
         lightning.style.opacity = lightningOpacity;
 
-        lightningOpacity *= 0.75;
+        lightningOpacity *= 0.55;
+
         lightningDuration--;
 
     } else {
@@ -1042,6 +1194,7 @@ function drawLightning() {
     }
 
 }
+
 
 /* =====================================================
    MAIN ANIMATION LOOP
@@ -1057,8 +1210,6 @@ function animate() {
 
     drawClouds();
 
-    drawParticles();
-
     drawRain();
 
     drawLightning();
@@ -1068,6 +1219,7 @@ function animate() {
 }
 
 animate();
+
 
 /* =====================================================
    SCROLL FADE IN
